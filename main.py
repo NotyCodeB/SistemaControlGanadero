@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
 from db import database
+from resources import routes
 
 app = FastAPI()
+app.include_router(routes.api_router)
 
 
 @app.on_event("startup")
