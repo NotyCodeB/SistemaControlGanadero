@@ -25,7 +25,12 @@ class AuthManager:
         except Exception as ex:
             raise ex
 
-
+    @staticmethod
+    def get_current_user(request: Request):
+        user = request.state.user
+        if not user:
+            raise HTTPException(403, "Forbidden")
+        return user
 class CustomHTTPBearer(HTTPBearer):
     async def __call__(
             # Request(importar starlette)

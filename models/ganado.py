@@ -13,5 +13,6 @@ ganado = sqlalchemy.Table(
     sqlalchemy.Column("litros_leche_diarios", sqlalchemy.Float, nullable=False),
     sqlalchemy.Column("peso", sqlalchemy.String(20), nullable=True),
     sqlalchemy.Column("registrada_en", sqlalchemy.DateTime, server_default=sqlalchemy.func.now()),
-    sqlalchemy.Column("id_usuario", sqlalchemy.ForeignKey("users.id"), nullable=False)
+    sqlalchemy.Column("id_usuario", sqlalchemy.ForeignKey("users.id"), nullable=False),
+    sqlalchemy.Column("precio",sqlalchemy.Integer)
 )

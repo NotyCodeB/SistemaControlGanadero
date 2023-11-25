@@ -14,3 +14,5 @@ class Genero(enum.Enum):
 class Categoria(enum.Enum):
     leche = "Leche"
     engorde = "Engorde"
+
+

@@ -1,9 +1,12 @@
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from asyncpg import UniqueViolationError
+from starlette.requests import Request
+
 from db import database
 from managers.auth import AuthManager
 from models import user, RoleType
+from schemas.response.user import UserResponse
 
 #isntancia para hashear contraseñas o algo
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -30,6 +33,13 @@ class UserManager:
         elif not pwd_context.verify(user_data["password"], user_do["password"]):
             raise HTTPException(400, "Wrong email or password")
         return AuthManager.encode_token(user_do)
+
+    async def chanche_user_data(user_data: dict, request: Request):
+        current_user = AuthManager.get_current_user(request)
+        user_data["id"] = current_user.id
+        await database.execute(user.update().where(user.c.id == current_user.id).values(**user_data))
+        updated_user = await database.fetch_one(user.select().where(user.c.id == current_user.id))
+        return UserResponse(**updated_user)
 
     @staticmethod
     async def get_all_users():
