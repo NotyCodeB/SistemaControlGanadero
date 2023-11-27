@@ -12,7 +12,7 @@ from schemas.response.user import UserResponse
 router = APIRouter(tags=["Users"])
 
 
-@router.get("/users/", dependencies=[Depends(oauth2_scheme), Depends(es_admin)], response_model=List[UserResponse])
+@router.get("/users/", response_model=List[UserResponse])
 async def get_users(email: Optional[str] = None):
     if email:
         return await UserManager.get_user_by_email(email)
